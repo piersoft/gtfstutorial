@@ -96,7 +96,7 @@ p.pic {
 </div>
 <div id="infodiv" style="leaflet-popup-content-wrapper">
   <p><b>Trasporti SGM Lecce<br></b>
-  Mappa con fermate, linee e orari dei Bus dei TPL della <a href="http://dati.comune.lecce.it/dataset/trasporto-pubblico-locale">SGM spa</a> by @piersoft. Lic. CC-BY OpenData Comunue di Lecce</p>
+  Mappa con fermate, linee e orari dei Bus dei TPL della <a href="http://dati.comune.lecce.it/dataset/trasporto-pubblico-locale">SGM spa</a>. <a href="http://www.piersoft.it/?p=1017">Map e turorial</a> by @piersoft. GTFS Lic. CC-BY <a href="http://dati.comune.lecce.it/dataset/trasporto-pubblico-locale">OpenData Comune di Lecce</a></p>
 </div>
 <div id='loader'><span class='message'>loading<p class="pic"><img src="http://www.piersoft.it/gtfstutorial/ajax-loader3.gif"></p></span></div>
 </div>
@@ -113,10 +113,10 @@ p.pic {
         zoom=18;
 
 
-        var transport = new L.TileLayer('http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png', {minZoom: 0, maxZoom: 20, attribution: 'Map Data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors. map by @piersoft'});
+        var transport = new L.TileLayer('http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png', {minZoom: 0, maxZoom: 20, attribution: 'Map Data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors.'});
         var realvista = L.tileLayer.wms("http://213.215.135.196/reflector/open/service?", {
             		layers: 'rv1',
-            		format: 'image/jpeg',attribution: '<a href="http://www.realvista.it/website/Joomla/" target="_blank">RealVista &copy; CC-BY Tiles</a> | <a href="http://openstreetmap.org">OpenStreetMap</a> contributors. map by @piersoft'
+            		format: 'image/jpeg',attribution: '<a href="http://www.realvista.it/website/Joomla/" target="_blank">RealVista &copy; CC-BY Tiles</a> | <a href="http://openstreetmap.org">OpenStreetMap</a> contributors.'
             	});
 
         var osm = new L.TileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {maxZoom: 20, attribution: 'Map Data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors. map by @piersoft'});

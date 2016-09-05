@@ -71,7 +71,7 @@ function get_linee($linea)
 
       if ($filter1==$linea){
       //  echo $filter1."</br>";
-      $homepage1 =$csv1[$ii][0]."</br>(".$csv1[$ii][3].")";
+      $homepage1 =$csv1[$ii][2]."</br>(".$csv1[$ii][3].")";
       }
     }
 
@@ -84,7 +84,7 @@ function get_linee($linea)
 
         $ora=date("H:i:s", time());
         $ora2=date("H:i:s", time()+ 60*60);
-      //  $ora2="09:30:00"; debug 
+      //  $ora2="09:30:00"; debug
       //  $ora="08:30:00";
         $linea=trim($linea);
         $corsa1="".$linea;
@@ -92,6 +92,7 @@ function get_linee($linea)
       $inizio=0;
       $homepage1 ="";
      //echo $url1;
+     $orari=[];
       $row=0;
       $c=0;
       $csv = array_map('str_getcsv', file($url1));
@@ -107,8 +108,12 @@ function get_linee($linea)
             $filter1= $csv[$i][3];
 
         if ($filter1==$linea){
+        //   array_push($distanza[$i]['orario'],$csv[$i][1]);
+          $distanza[$i]['orario']=$csv[$i][1];
+          $distanza[$i]['linea']=get_corse($csv[$i][0]);
+        //  var_dump($distanza[$i]);
           //  echo $csv[$i][0]."</br>";
-            $homepage1 .="La linea ".get_corse($csv[$i][0])."passa alle ".$csv[$i][1]."<br>---------<br>";
+          //  $homepage1 .="La linea ".get_corse($csv[$i][0])."passa alle ".$csv[$i][1]."<br>---------<br>";
               $c++;
           }
         }
@@ -119,8 +124,14 @@ function get_linee($linea)
       if ($c > 80){
         $homepage1="errore generico linea";
       }
-//echo "c:".$c."</br>";
+      sort($distanza);
+    //  var_dump($distanza);
+      for ($ii=0;$ii<$c;$ii++)
+      {
+        $homepage1 .="La linea ".$distanza[$ii]['linea']."passa alle ".$distanza[$ii]['orario']."<br>---------<br>";
+      }
+  //echo "c:".$c."</br>";
     return   $homepage1;
     }
 
-?>
+  ?>
