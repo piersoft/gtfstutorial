@@ -36,6 +36,20 @@ function microAjax2(B,A){this.bindFunction=function(E,D){return function(){retur
         bottom:0;
         font-family: Titillium Web, Arial, Sans-Serif;
 }
+#logo{
+position:fixed;
+top:10px;
+left:55px;
+// border-radius: 5px;
+//      -moz-border-radius: 5px;
+//    -webkit-border-radius: 5px;
+//    border: 2px solid #808080;
+//    background-color:#fff;
+//    padding:2px;
+//    box-shadow: 0 3px 14px rgba(0,0,0,0.4)
+
+}
+
 #infodiv{
 background-color: rgba(255, 255, 255, 0.95);
 
@@ -98,7 +112,13 @@ p.pic {
   <p><b>Trasporti SGM Lecce<br></b>
   Mappa con fermate, linee e orari dei Bus dei TPL della <a href="http://dati.comune.lecce.it/dataset/trasporto-pubblico-locale">SGM spa</a>. <a href="http://www.piersoft.it/?p=1017">Map e turorial</a> by @piersoft. GTFS Lic. CC-BY <a href="http://dati.comune.lecce.it/dataset/trasporto-pubblico-locale">OpenData Comune di Lecce</a></p>
 </div>
-<div id='loader'><span class='message'>loading<p class="pic"><img src="http://www.piersoft.it/gtfstutorial/ajax-loader3.gif"></p></span></div>
+<div id="logo" style="leaflet-popup-content-wrapper">
+<a href="https://www.piersoft.it/gtfstutorial/"><img src="logo.png" width="40px" title="localizzami" alt="localizzami"></a>
+</div>
+<div id='loader'><span class='message'><p class="pic"><img src="http://www.piersoft.it/gtfstutorial/ajax-loader3.gif"></p></span></div>
+</div>
+
+<div id='loader'><span class='message'><p class="pic"><img src="http://www.piersoft.it/gtfstutorial/ajax-loader3.gif"></p></span></div>
 </div>
 <script type="text/javascript">
 </script>
@@ -147,7 +167,7 @@ p.pic {
         L.control.layers(baseMaps).addTo(map);
         var markeryou = L.marker([parseFloat('<?php printf($_GET['lat']); ?>'), parseFloat('<?php printf($_GET['lon']); ?>')]).addTo(map);
         markeryou.bindPopup("<b>Sei qui</b>");
-       var ico=L.icon({iconUrl:'circle.png', iconSize:[20,20],iconAnchor:[10,0]});
+       var ico=L.icon({iconUrl:'icobusstop.png', iconSize:[40,60],iconAnchor:[20,30]});
        var markers = L.markerClusterGroup({spiderfyOnMaxZoom: false, showCoverageOnHover: true,zoomToBoundsOnClick: true});
 
        var marker = new L.marker([lat,lon],{
