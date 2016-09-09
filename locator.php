@@ -38,8 +38,9 @@ function microAjax2(B,A){this.bindFunction=function(E,D){return function(){retur
 }
 #logo{
 position:fixed;
-top:10px;
-left:55px;
+top:80px;
+right:10px;
+z-index: 0;
 // border-radius: 5px;
 //      -moz-border-radius: 5px;
 //    -webkit-border-radius: 5px;
@@ -105,15 +106,16 @@ p.pic {
   <div data-tap-disabled="true">
 
  <div id="mapdiv"></div>
- <div id="sidebar">
 
-</div>
 <div id="infodiv" style="leaflet-popup-content-wrapper">
   <p><b>Trasporti SGM Lecce<br></b>
   Mappa con fermate, linee e orari dei Bus dei TPL della <a href="http://dati.comune.lecce.it/dataset/trasporto-pubblico-locale">SGM spa</a>. <a href="http://www.piersoft.it/?p=1017">Map e turorial</a> by @piersoft. GTFS Lic. CC-BY <a href="http://dati.comune.lecce.it/dataset/trasporto-pubblico-locale">OpenData Comune di Lecce</a></p>
 </div>
 <div id="logo" style="leaflet-popup-content-wrapper">
 <a href="https://www.piersoft.it/gtfstutorial/"><img src="logo.png" width="40px" title="localizzami" alt="localizzami"></a>
+</div>
+<div id="sidebar" style="z-index: 1;">
+
 </div>
 <div id='loader'><span class='message'><p class="pic"><img src="http://www.piersoft.it/gtfstutorial/ajax-loader3.gif"></p></span></div>
 </div>
@@ -125,19 +127,20 @@ p.pic {
 // -->
 </script>
   <script type="text/javascript">
-		var lat='<?php printf($_GET['lat']); ?>',
+  var dataLayer = new L.geoJson();
+    var lat='<?php printf($_GET['lat']); ?>',
         lon='<?php printf($_GET['lon']); ?>',
         zoom=18;
 
 
         var transport = new L.TileLayer('http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png', {minZoom: 0, maxZoom: 20, attribution: 'Map Data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors.'});
         var realvista = L.tileLayer.wms("http://213.215.135.196/reflector/open/service?", {
-            		layers: 'rv1',
-            		format: 'image/jpeg',attribution: '<a href="http://www.realvista.it/website/Joomla/" target="_blank">RealVista &copy; CC-BY Tiles</a> | <a href="http://openstreetmap.org">OpenStreetMap</a> contributors.'
-            	});
+                layers: 'rv1',
+                format: 'image/jpeg',attribution: '<a href="http://www.realvista.it/website/Joomla/" target="_blank">RealVista &copy; CC-BY Tiles</a> | <a href="http://openstreetmap.org">OpenStreetMap</a> contributors.'
+              });
 
-        var osm = new L.TileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {maxZoom: 20, attribution: 'Map Data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors. map by @piersoft'});
-		//    var mapquest = new L.TileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {subdomains: '1234', maxZoom: 18, attribution: 'Map Data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'});
+        var osm = new L.TileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {maxZoom: 19, attribution: 'Map Data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors. map by @piersoft'});
+    //    var mapquest = new L.TileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {subdomains: '1234', maxZoom: 18, attribution: 'Map Data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'});
 
         var map = new L.Map('mapdiv', {
             editInOSMControl: true,
@@ -146,7 +149,7 @@ p.pic {
             },
             center: new L.LatLng(lat, lon),
             zoom: zoom,
-            layers: [transport]
+            layers: [osm]
         });
 
         var baseMaps = {
@@ -160,11 +163,11 @@ p.pic {
           position: 'left'
       });
       map.addControl(sidebar);
-
+      map.addLayer(dataLayer);
         L.control.layers(baseMaps).addTo(map);
         var markeryou = L.marker([parseFloat('<?php printf($_GET['lat']); ?>'), parseFloat('<?php printf($_GET['lon']); ?>')]).addTo(map);
         markeryou.bindPopup("<b>Sei qui</b>");
-       var ico=L.icon({iconUrl:'icobusstop.png', iconSize:[40,60],iconAnchor:[20,30]});
+       var ico=L.icon({iconUrl:'circle.png', iconSize:[25,25],iconAnchor:[12,12]});
        var markers = L.markerClusterGroup({spiderfyOnMaxZoom: false, showCoverageOnHover: true,zoomToBoundsOnClick: true});
 
        var marker = new L.marker([lat,lon],{
@@ -199,10 +202,11 @@ p.pic {
                       // marker.onClick(MostrarVideo(feature.properties.stop_code));
                         return marker;
                         }
-                }).addTo(map);
-                map.addLayer(myLayer);
-
-                map.on('popupopen', function(e){
+                });
+                //map.addLayer(myLayer);
+                markers.addLayer(myLayer);
+                map.addLayer(markers);
+                markers.on('popupopen', function(e){
                   map.closePopup();
                   var marker = e.popup._source.feature.properties.stop_id;
                   var name = e.popup._source.feature.properties.stop_name;
@@ -227,6 +231,7 @@ p.pic {
               //  markers.on('click',MostrarVideo(feature.properties.stop_code));
         }
 
+
         microAjax('json/mappaf.json',function (res) {
         var feat=JSON.parse(res);
         loadLayer(feat);
@@ -234,11 +239,11 @@ p.pic {
           finishedLoading();
         } );
 
-function startLoading() {
+  function startLoading() {
     loader.className = '';
-}
+  }
 
-function finishedLoading() {
+  function finishedLoading() {
     // first, toggle the class 'done', which makes the loading screen
     // fade out
     loader.className = 'done';
@@ -248,7 +253,7 @@ function finishedLoading() {
         // map again.
         loader.className = 'hide';
     }, 500);
-}
+  }
       sidebar.on('show', function () {
           console.log('Sidebar will be visible.');
       });
@@ -269,7 +274,43 @@ function finishedLoading() {
           console.log('Close button clicked.');
           location.reload();
       });
-</script>
 
-</body>
-</html>
+      function addDataToMapUCL(data, map) {
+        var dataLayer1 = L.geoJson(data,{
+
+              onEachFeature: function(feature, layer) {
+                var popupString = '<div class="popup">';
+                var direzione="ANDATA";
+                if (feature.properties.direction_id ==1) direzione="RITORNO";
+                  popupString += '<b>Numero: </b>' + feature.properties.name + '<br />';
+                  popupString += '<b>Linea: </b>' + feature.properties.routes_route_long_name + '<br />';
+                  popupString += '<b>Direzione: </b> ' + direzione + '<br />';
+
+                                  //  for (var k in feature.properties) {
+                                  //      var v = feature.properties[k];
+                                  //      popupString += '<b>'+k + '</b>: ' + v + '<br />';
+                                  //  }
+                  popupString += '</div>';
+                  layer.bindPopup(popupString);
+              layer.setStyle({
+               weight: 5,
+               opacity: 0.7,
+               color: '#'+feature.properties.routes_route_color,
+               dashArray: '3',
+               fillOpacity: 0.3,
+               fillColor: '#000000'
+              })
+              //console.log(feature.properties.routes_route_color);
+              }
+
+              });
+          dataLayer1.addTo(map);
+
+      }
+
+      $.getJSON("json/routes.geojson", function(data) { addDataToMapUCL(data, map); });
+
+  </script>
+
+  </body>
+  </html>
