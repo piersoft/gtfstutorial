@@ -117,9 +117,6 @@ p.pic {
 </div>
 <div id='loader'><span class='message'><p class="pic"><img src="http://www.piersoft.it/gtfstutorial/ajax-loader3.gif"></p></span></div>
 </div>
-
-<div id='loader'><span class='message'><p class="pic"><img src="http://www.piersoft.it/gtfstutorial/ajax-loader3.gif"></p></span></div>
-</div>
 <script type="text/javascript">
 </script>
 <script language="javascript" type="text/javascript">
