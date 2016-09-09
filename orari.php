@@ -1,4 +1,15 @@
-<?php
+<!DOCTYPE html>
+<html>
+<head>
+ <link href="http://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet" type="text/css">
+<meta charset=utf-8 />
+<style type="text/css">
+body,td,th {
+font-family: "Open Sans";
+font-size: 14px;
+}
+</style>
+</head><?php
 flush();
 $idstop=$_GET["id"];
 $idname=$_GET["name"];
