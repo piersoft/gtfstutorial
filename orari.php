@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
- <link href="http://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet" type="text/css">
 <meta charset=utf-8 />
 <style type="text/css">
 body,td,th {
-font-family: "Open Sans";
+font-family: "Titillium Web, Arial, Sans-Serif;";
 font-size: 14px;
 }
 </style>
-</head><?php
+</head>
+<?php
+ini_set('memory_limit', '4048M');
+ini_set('max_execution_time', '180');
 flush();
 $idstop=$_GET["id"];
 $idname=$_GET["name"];
@@ -31,7 +34,14 @@ function get_corse($corsa)
      //  echo $url;
       $csv = array_map('str_getcsv', file($url));
       $count = 0;
+      $trip_id="";
+      $service_id="";
+      $route_id="";
       foreach($csv as $data=>$csv1){
+      if ($csv[0][$count]=="trip_id") $trip_id=$count;
+      if ($csv[0][$count]=="service_id") $service_id=$count;
+      if ($csv[0][$count]=="route_id") $route_id=$count;
+
         $count = $count+1;
 
       }
@@ -46,13 +56,13 @@ function get_corse($corsa)
 
     //  echo $count;
       for ($i=$inizio;$i<$count;$i++){
-        $filter= $csv[$i][2];
+        $filter= $csv[$i][$trip_id];
 
         if ($filter==$corsa){
-      //  echo $csv[$i][0]."</br>";
-        $homepage1c =get_calendar($csv[$i][1]);
+      //  echo $csv[$i][6]."</br>";
+        $homepage1c =get_calendar($csv[$i][$service_id]);
 
-    if ($homepage1c==true) $homepage =get_linee($csv[$i][0])."</br>";
+    if ($homepage1c==true) $homepage =get_linee($csv[$i][$route_id])."</br>";
       //  else $homepage =get_linee($csv[$i][0])." nel giorno ".$homepage1c." </br>";
 }
     }
@@ -66,15 +76,17 @@ function get_calendar($linea)
     $url1="gtfs/calendar.txt";
     $inizio1=0;
     $homepage1 ="";
+    $service_id="";
    //echo $url1;
     $csv1 = array_map('str_getcsv', file($url1));
     $count1 = 0;
     foreach($csv1 as $data1=>$csv11){
+        if ($csv1[0][$count1]=="service_id") $service_id=$count1;
       $count1 = $count1+1;
     }
     //  echo $count;
     for ($ii=$inizio1;$ii<$count1;$ii++){
-      $filter1= $csv1[$ii][0];
+      $filter1= $csv1[$ii][$service_id];
     //  echo $numero_giorno_settimana." ".$csv1[$ii][$numero_giorno_settimana+1]."</br>";
 
       if ($filter1==$linea){
@@ -97,24 +109,31 @@ function get_linee($linea)
    //echo $url1;
     $csv1 = array_map('str_getcsv', file($url1));
     $count1 = 0;
+      $route_id="";
+      $route_long_name="";
+      $route_short_name="";
     foreach($csv1 as $data1=>$csv11){
+        if ($csv1[0][$count1]=="route_short_name") $route_short_name=$count1;
+        if ($csv1[0][$count1]=="route_long_name") $route_long_name=$count1;
+        if ($csv1[0][$count1]=="route_id") $route_id=$count1;
       $count1 = $count1+1;
     }
     if ($count1 == 0){
       $homepage1="Nessuna linea";
     //  return   $homepage1;
     }
+
     if ($count > 40){
       $homepage1="errore generico linea";
     //  return   $homepage1;
     }
     //  echo $count;
     for ($ii=$inizio1;$ii<$count1;$ii++){
-      $filter1= $csv1[$ii][0];
+      $filter1= $csv1[$ii][$route_id];
 
       if ($filter1==$linea){
       //  echo $filter1."</br>";
-      $homepage1 =$csv1[$ii][2]."</br>(".$csv1[$ii][3].")";
+      $homepage1 =$csv1[$ii][$route_short_name]."</br>(".$csv1[$ii][$route_long_name].")";
       }
     }
 
@@ -123,46 +142,49 @@ function get_linee($linea)
   function get_stopid($linea)
       {
 
-        date_default_timezone_set("Europe/Rome");
-
-        $ora=date("H:i:s", time());
-        $ora2=date("H:i:s", time()+ 60*60);
-      //  $ora2="09:30:00"; debug
+      date_default_timezone_set("Europe/Rome");
+      $ora=date("H:i:s", time());
+      $ora2=date("H:i:s", time()+ 60*60);
+      //  $ora2="09:30:00"; //debug
       //  $ora="08:30:00";
-        $linea=trim($linea);
-        $corsa1="".$linea;
+      $linea=trim($linea);
+      $corsa1="".$linea;
       $url1="gtfs/stop_times.txt";
       $inizio=0;
       $homepage1 ="";
      //echo $url1;
-     $orari=[];
+      $orari=[];
       $row=0;
       $c=0;
       $csv = array_map('str_getcsv', file($url1));
       $count = 0;
+      $stop_id="";
+      $stop_arrive="";
+      $trip_id="";
       foreach($csv as $data1=>$csv11){
+        if ($csv[0][$count]=="stop_id") $stop_id=$count;
+        if ($csv[0][$count]=="arrival_time") $stop_arrive=$count;
+        if ($csv[0][$count]=="trip_id") $trip_id=$count;
         $count = $count+1;
       }
+
         for ($i=$inizio;$i<$count;$i++)
         {
 
-          if ($csv[$i][1] <=$ora2 && $csv[$i][1] >$ora) {
+          if ($csv[$i][$stop_arrive] <=$ora2 && $csv[$i][$stop_arrive] >$ora) {
 
-            $filter1= $csv[$i][3];
+            $filter1= $csv[$i][$stop_id];
 
         if ($filter1==$linea){
         //   array_push($distanza[$i]['orario'],$csv[$i][1]);
-          $distanza[$i]['orario']=$csv[$i][1];
-          $distanza[$i]['linea']=get_corse($csv[$i][0]);
-        //  var_dump($distanza[$i]);
-          //  echo $csv[$i][0]."</br>";
-          //  $homepage1 .="La linea ".get_corse($csv[$i][0])."passa alle ".$csv[$i][1]."<br>---------<br>";
+          $distanza[$i]['orario']=$csv[$i][$stop_arrive];
+          $distanza[$i]['linea']=get_corse($csv[$i][$trip_id]);
               $c++;
           }
         }
           }
       if ($c == 0){
-        $homepage1="non ci sono corse nella prossima ora";
+        $homepage1="<b>Non ci sono corse nella prossima ora!</b>";
       }
       if ($c > 80){
         $homepage1="errore generico linea";
@@ -171,12 +193,14 @@ function get_linee($linea)
     //  var_dump($distanza);
       for ($ii=0;$ii<$c;$ii++)
       {
-
-      if ($distanza[$ii]['linea']!="")  $homepage1 .="La linea ".$distanza[$ii]['linea']."passa alle ".$distanza[$ii]['orario']."<br>---------<br>";
-
+        $homepage1 .="La linea ".$distanza[$ii]['linea']."passa alle ".$distanza[$ii]['orario']."<br>---------<br>";
       }
   //echo "c:".$c."</br>";
     return   $homepage1;
     }
 
   ?>
+
+<body>
+</body>
+</html>
