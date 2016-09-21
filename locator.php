@@ -21,6 +21,8 @@ $r=$_GET["r"];
   <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
 <script src="http://turbo87.github.io/leaflet-sidebar/src/L.Control.Sidebar.js"></script>
    <script src="leaflet.markercluster.js"></script>
+   <script src="http://joker-x.github.io/Leaflet.geoCSV/lib/jquery.js"></script>
+
 <script type="text/javascript">
 
 function microAjax(B,A){this.bindFunction=function(E,D){return function(){return E.apply(D,[D])}};this.stateChange=function(D){if(this.request.readyState==4 ){this.callbackFunction(this.request.responseText)}};this.getRequest=function(){if(window.ActiveXObject){return new ActiveXObject("Microsoft.XMLHTTP")}else { if(window.XMLHttpRequest){return new XMLHttpRequest()}}return false};this.postBody=(arguments[2]||"");this.callbackFunction=A;this.url=B;this.request=this.getRequest();if(this.request){var C=this.request;C.onreadystatechange=this.bindFunction(this.stateChange,this);if(this.postBody!==""){C.open("POST",B,true);C.setRequestHeader("X-Requested-With","XMLHttpRequest");C.setRequestHeader("Content-Type","application/x-www-form-urlencoded; charset=UTF-8");C.setRequestHeader("Connection","close")}else{C.open("GET",B,true)}C.send(this.postBody)}};
@@ -112,7 +114,7 @@ p.pic {
   Mappa con fermate, linee e orari dei Bus dei TPL della <a href="http://dati.comune.lecce.it/dataset/trasporto-pubblico-locale">SGM spa</a>. <a href="http://www.piersoft.it/?p=1017">Map e turorial</a> by @piersoft. GTFS Lic. CC-BY <a href="http://dati.comune.lecce.it/dataset/trasporto-pubblico-locale">OpenData Comune di Lecce</a></p>
 </div>
 <div id="logo" style="leaflet-popup-content-wrapper">
-<a href="https://www.piersoft.it/gtfstutorial/"><img src="logo.png" width="40px" title="localizzami" alt="localizzami"></a>
+<a href="https://www.piersoft.it/gtfstutorial/" target="_blank"><img src="logo.png" width="40px" title="localizzami" alt="localizzami"></a>
 </div>
 <div id="sidebar" style="z-index: 1;">
 
@@ -210,6 +212,16 @@ p.pic {
                   map.closePopup();
                   var marker = e.popup._source.feature.properties.stop_id;
                   var name = e.popup._source.feature.properties.stop_name;
+                  var stop_ids=e.popup._source.feature.properties.stop_ids;
+                  var stop_arrives=e.popup._source.feature.properties.stop_arrives;
+                  var trip_ids=e.popup._source.feature.properties.trip_ids;
+                  var route_short_namer=e.popup._source.feature.properties.route_short_namer;
+                  var route_long_namer=e.popup._source.feature.properties.route_long_namer;
+                  var route_idr=e.popup._source.feature.properties.route_idr;
+                  var service_idc=e.popup._source.feature.properties.service_idc;
+                  var trip_idt=e.popup._source.feature.properties.trip_idt;
+                  var service_idt=e.popup._source.feature.properties.service_idt;
+                  var route_idt=e.popup._source.feature.properties.route_idt;
 
                   console.log(marker+" "+name);
                   sidebar.show();
@@ -218,7 +230,7 @@ p.pic {
                 {contenedor.innerHTML = '';
                 } else{
 
-                  contenedor.innerHTML = '<iframe width="100%" height="600" src="tmp.php?id='+marker+'&name='+name+'" frameborder="0" allowfullscreen></iframe>';
+                  contenedor.innerHTML = '<iframe width="100%" height="600" src="tmp.php?id='+marker+'&name='+name+'&stop_ids='+stop_ids+'&stop_arrives='+stop_arrives+'&trip_ids='+trip_ids+'&route_short_namer='+route_short_namer+'&route_long_namer='+route_long_namer+'&route_idr='+route_idr+'&service_idc='+service_idc+'&trip_idt='+trip_idt+'&service_idt='+service_idt+'&route_idt='+route_idt+'" frameborder="0" allowfullscreen></iframe>';
 
                 var element = document.getElementById("infodiv");
                 if (element !=null) element.parentNode.removeChild(element);
