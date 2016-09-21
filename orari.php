@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet" type="text/css">
+ <link href="http://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet" type="text/css">
 <meta charset=utf-8 />
 <style type="text/css">
 body,td,th {
-font-family: "Titillium Web, Arial, Sans-Serif;";
+font-family: "Open Sans";
 font-size: 14px;
 }
 </style>
@@ -34,15 +34,15 @@ function get_corse($corsa)
      //  echo $url;
       $csv = array_map('str_getcsv', file($url));
       $count = 0;
-      $trip_id="";
-      $service_id="";
-      $route_id="";
+      $trip_id="0";
+      $service_id="0";
+      $route_id="0";
       foreach($csv as $data=>$csv1){
       if ($csv[0][$count]=="trip_id") $trip_id=$count;
       if ($csv[0][$count]=="service_id") $service_id=$count;
       if ($csv[0][$count]=="route_id") $route_id=$count;
 
-        $count = $count+1;
+        $count++;
 
       }
       if ($count == 0){
@@ -75,8 +75,8 @@ function get_calendar($linea)
 
     $url1="gtfs/calendar.txt";
     $inizio1=0;
-    $homepage1 ="";
-    $service_id="";
+    $homepage1 ="0";
+    $service_id="0";
    //echo $url1;
     $csv1 = array_map('str_getcsv', file($url1));
     $count1 = 0;
@@ -109,9 +109,9 @@ function get_linee($linea)
    //echo $url1;
     $csv1 = array_map('str_getcsv', file($url1));
     $count1 = 0;
-      $route_id="";
-      $route_long_name="";
-      $route_short_name="";
+      $route_id="0";
+      $route_long_name="0";
+      $route_short_name="0";
     foreach($csv1 as $data1=>$csv11){
         if ($csv1[0][$count1]=="route_short_name") $route_short_name=$count1;
         if ($csv1[0][$count1]=="route_long_name") $route_long_name=$count1;
@@ -158,14 +158,14 @@ function get_linee($linea)
       $c=0;
       $csv = array_map('str_getcsv', file($url1));
       $count = 0;
-      $stop_id="";
-      $stop_arrive="";
-      $trip_id="";
+      $stop_id="0";
+      $stop_arrive="0";
+      $trip_id="0";
       foreach($csv as $data1=>$csv11){
         if ($csv[0][$count]=="stop_id") $stop_id=$count;
         if ($csv[0][$count]=="arrival_time") $stop_arrive=$count;
         if ($csv[0][$count]=="trip_id") $trip_id=$count;
-        $count = $count+1;
+        $count++;
       }
 
         for ($i=$inizio;$i<$count;$i++)
@@ -179,7 +179,8 @@ function get_linee($linea)
         //   array_push($distanza[$i]['orario'],$csv[$i][1]);
           $distanza[$i]['orario']=$csv[$i][$stop_arrive];
           $distanza[$i]['linea']=get_corse($csv[$i][$trip_id]);
-              $c++;
+          if ($distanza[$i]['linea'] !="") $c++;
+        //  echo "linea".$distanza[$i]['linea'];
           }
         }
           }
