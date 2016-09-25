@@ -15,7 +15,7 @@ ini_set('memory_limit', '4048M');
 ini_set('max_execution_time', '180');
 flush();
 $idstop=$_GET["id"];
-$idname=$_GET["name"];
+$idname=$_GET["sname"];
 $trip_idt=$_GET["trip_idt"];
 $service_idt=$_GET["service_idt"];
 $route_idt=$_GET["route_idt"];
@@ -28,8 +28,10 @@ $stop_arrives=$_GET["stop_arrives"];
 $trip_ids=$_GET["trip_ids"];
 //debug
 //echo $trip_idt.",".$service_idt.",".$route_idt.",".$service_idc.",".$route_idr.",".$route_long_namer.",".$route_short_namer.",".$stop_ids.",".$stop_arrives.",".$trip_ids."</br>";
-$homepage1c=false;
-echo "<b>Fermata ".$idname."</b></BR>Arrivi pianificati nella prossima ora:</BR></BR>";
+//$homepage1c=false;
+date_default_timezone_set("Europe/Rome");
+$ora=date("H:i:s", time());
+echo "<b>".$idname."</b></BR>".$ora.", arrivi pianificati nella prossima ora:</BR></BR>";
 echo get_stopid($idstop);
 
 function get_corse($corsa)
@@ -72,9 +74,11 @@ function get_corse($corsa)
         $filter= $csv[$i][$trip_idt];
 
         if ($filter==$corsa){
-      //  echo $csv[$i][6]."</br>";
-        $homepage1c =get_calendar($csv[$i][$service_idt]);
+      //  echo $csv[$i][$trip_idt]."</br>";
+      //  echo $csv[$i][$route_idt]."</br>";
 
+        $homepage1c =get_calendar($csv[$i][$service_idt]);
+      //  echo "homepage ".$homepage1c."</br>";
     if ($homepage1c==true) $homepage =get_linee($csv[$i][$route_idt])."</br>";
       //  else $homepage =get_linee($csv[$i][0])." nel giorno ".$homepage1c." </br>";
 }
@@ -86,10 +90,19 @@ function get_calendar($linea)
       GLOBAL $service_idc;
       $numero_giorno_settimana = date("w");
       $linea=trim($linea);
-
+      $giornoposizione=0;
+      if ($numero_giorno_settimana ==0) $giornoposizione=7;
+      if ($numero_giorno_settimana ==1) $giornoposizione=1;
+      if ($numero_giorno_settimana ==2) $giornoposizione=2;
+      if ($numero_giorno_settimana ==3) $giornoposizione=3;
+      if ($numero_giorno_settimana ==4) $giornoposizione=4;
+      if ($numero_giorno_settimana ==5) $giornoposizione=5;
+      if ($numero_giorno_settimana ==6) $giornoposizione=6;
+    //  echo "oggi è: ".$numero_giorno_settimana."</br>";
+    //    echo "giornoposizione: ".$giornoposizione."</br>";
     $url1="gtfs/calendar.txt";
-    $inizio1=0;
-  //  $homepage1 ="0";
+    $inizio1=1;
+    $homepage1 =0;
   //  $service_id="0";
    //echo $url1;
     $csv1 = array_map('str_getcsv', file($url1));
@@ -98,18 +111,26 @@ function get_calendar($linea)
     //    if ($csv1[0][$count1]=="service_id") $service_id=$count1;
       $count1 = $count1+1;
     }
-    //  echo $count;
+    //  echo "oggi: ".$numero_giorno_settimana."</br>";
     for ($ii=$inizio1;$ii<$count1;$ii++){
       $filter1= $csv1[$ii][$service_idc];
-    //  echo $numero_giorno_settimana.",".$csv1[$ii][$numero_giorno_settimana+1]."</br>";
 
+    //  echo $csv1[$ii][$numero_giorno_settimana]."</br>";
       if ($filter1==$linea){
-      if ($csv1[$ii][$numero_giorno_settimana]!=0) $homepage1=true;
+
+      if ($csv1[$ii][$giornoposizione]==1) {
+      $homepage1=1;
+  //    echo "filtro".$filter1."</br>";
+  //      echo "giorno sett ".$csv1[$ii][7]."</br>";
+  //    echo "homepage: ".$homepage1."</br>";
+      //  echo $csv1[$ii][$giornoposizione]."</br>";
+    }
+      //  echo $csv1[$ii][0]."</br>";
 
       //$homepage1=$csv1[0][$numero_giorno_settimana];
     //  else $homepage1=1;
+  }
       }
-    }
 
   return   $homepage1;
   }
