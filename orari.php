@@ -30,11 +30,11 @@ $calendar_monday=$_GET["calendar_monday"];
 $start_date=$_GET["start_date"];
 $end_date=$_GET["end_date"];
 //debug
-//echo $trip_idt.",".$service_idt.",".$route_idt.",".$service_idc.",".$route_idr.",".$route_long_namer.",".$route_short_namer.",".$stop_ids.",".$stop_arrives.",".$trip_ids."</br>";
+//echo $trip_idt.",".$service_idt.",".$route_idt.",".$service_idc.",".$route_idr.",".$route_long_namer.",".$route_short_namer.",".$stop_ids.",".$stop_arrives.",".$trip_ids.",startdate:".$start_date.",enddate:".$end_date.",".$calendar_monday."</br>";
 //$homepage1c=false;
 date_default_timezone_set("Europe/Rome");
 $ora=date("H:i:s", time());
-echo "<b>".$idname."</b></BR>".$ora.", arrivi pianificati nella prossima ora:</BR></BR>";
+echo "<b>Fermata: ".$idname."</b></BR>".$ora.", arrivi pianificati nella prossima ora:</BR></BR>";
 echo get_stopid($idstop);
 
 function get_corse($corsa)
@@ -96,6 +96,7 @@ function get_calendar($linea)
       GLOBAL $end_date;
       $numero_giorno_settimana = date("w");
       $today = date("Ymd");
+    //  echo $today;
       $linea=trim($linea);
       $giornoposizione=3; // inserire la posizione del Monday in calendar.txt
       if ($numero_giorno_settimana ==0) $giornoposizione=$calendar_monday+6;
@@ -123,13 +124,17 @@ function get_calendar($linea)
     //  echo "oggi: ".$numero_giorno_settimana."</br>";
     for ($ii=$inizio1;$ii<$count1;$ii++){
       $filter1= $csv1[$ii][$service_idc];
-
+//echo $filter1."</br>";
     //  echo $csv1[$ii][$numero_giorno_settimana]."</br>";
       if ($filter1==$linea){
 
       if ($csv1[$ii][$giornoposizione]==1) {
-        if ($today >=$csv1[$ii][$start_date] && $today >=$csv1[$ii][$end_date]){
+      //   echo $today."</br>";
+      //   echo $csv1[$ii][$start_date]."</br>";
+      //   echo $csv1[$ii][$end_date]."</br>";
+        if ($today >=$csv1[$ii][$start_date] && $today <=$csv1[$ii][$end_date]){
       $homepage1=1;
+    //  echo "bingo";
     }
   //    echo "filtro".$filter1."</br>";
   //      echo "giorno sett ".$csv1[$ii][7]."</br>";
