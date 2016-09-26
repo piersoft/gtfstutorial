@@ -40,8 +40,8 @@ function microAjax2(B,A){this.bindFunction=function(E,D){return function(){retur
 }
 #logo{
 position:fixed;
-top:80px;
-right:10px;
+top:10px;
+left:50px;
 z-index: 0;
 // border-radius: 5px;
 //      -moz-border-radius: 5px;
@@ -162,7 +162,7 @@ p.pic {
 
     var sidebar = L.control.sidebar('sidebar', {
           closeButton: true,
-          position: 'left'
+          position: 'right'
       });
       map.addControl(sidebar);
       map.addLayer(dataLayer);
@@ -222,15 +222,16 @@ p.pic {
                   var trip_idt=e.popup._source.feature.properties.trip_idt;
                   var service_idt=e.popup._source.feature.properties.service_idt;
                   var route_idt=e.popup._source.feature.properties.route_idt;
+                  var calendar_monday=e.popup._source.feature.properties.calendar_monday;
 
-                  console.log(marker+" "+name);
+                  console.log(marker+" "+name+" calendar monday"+calendar_monday);
                   sidebar.show();
                 var contenedor = document.getElementById('sidebar');
                 if(marker == '')
                 {contenedor.innerHTML = '';
                 } else{
 
-                  contenedor.innerHTML = '<iframe width="100%" height="600" src="tmp.php?id='+marker+'&name='+name+'&stop_ids='+stop_ids+'&stop_arrives='+stop_arrives+'&trip_ids='+trip_ids+'&route_short_namer='+route_short_namer+'&route_long_namer='+route_long_namer+'&route_idr='+route_idr+'&service_idc='+service_idc+'&trip_idt='+trip_idt+'&service_idt='+service_idt+'&route_idt='+route_idt+'" frameborder="0" allowfullscreen></iframe>';
+                  contenedor.innerHTML = '<iframe width="100%" height="600" src="tmp.php?id='+marker+'&name='+name+'&stop_ids='+stop_ids+'&stop_arrives='+stop_arrives+'&trip_ids='+trip_ids+'&route_short_namer='+route_short_namer+'&route_long_namer='+route_long_namer+'&route_idr='+route_idr+'&service_idc='+service_idc+'&trip_idt='+trip_idt+'&service_idt='+service_idt+'&route_idt='+route_idt+'&calendar_monday='+calendar_monday+'" frameborder="0" allowfullscreen></iframe>';
 
                 var element = document.getElementById("infodiv");
                 if (element !=null) element.parentNode.removeChild(element);

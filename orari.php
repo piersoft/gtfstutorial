@@ -26,6 +26,7 @@ $route_short_namer=$_GET["route_short_namer"];
 $stop_ids=$_GET["stop_ids"];
 $stop_arrives=$_GET["stop_arrives"];
 $trip_ids=$_GET["trip_ids"];
+$calendar_monday=$_GET["calendar_monday"];
 //debug
 //echo $trip_idt.",".$service_idt.",".$route_idt.",".$service_idc.",".$route_idr.",".$route_long_namer.",".$route_short_namer.",".$stop_ids.",".$stop_arrives.",".$trip_ids."</br>";
 //$homepage1c=false;
@@ -88,18 +89,19 @@ return   $homepage;
 function get_calendar($linea)
     {
       GLOBAL $service_idc;
+      GLOBAL $calendar_monday;
       $numero_giorno_settimana = date("w");
       $linea=trim($linea);
-      $giornoposizione=0;
-      if ($numero_giorno_settimana ==0) $giornoposizione=7;
-      if ($numero_giorno_settimana ==1) $giornoposizione=1;
-      if ($numero_giorno_settimana ==2) $giornoposizione=2;
-      if ($numero_giorno_settimana ==3) $giornoposizione=3;
-      if ($numero_giorno_settimana ==4) $giornoposizione=4;
-      if ($numero_giorno_settimana ==5) $giornoposizione=5;
-      if ($numero_giorno_settimana ==6) $giornoposizione=6;
+      $giornoposizione=3; // inserire la posizione del Monday in calendar.txt
+      if ($numero_giorno_settimana ==0) $giornoposizione=$calendar_monday+6;
+      if ($numero_giorno_settimana ==1) $giornoposizione=$calendar_monday;
+      if ($numero_giorno_settimana ==2) $giornoposizione=$calendar_monday+1;
+      if ($numero_giorno_settimana ==3) $giornoposizione=$calendar_monday+2;
+      if ($numero_giorno_settimana ==4) $giornoposizione=$calendar_monday+3;
+      if ($numero_giorno_settimana ==5) $giornoposizione=$calendar_monday+4;
+      if ($numero_giorno_settimana ==6) $giornoposizione=$calendar_monday+5;
     //  echo "oggi è: ".$numero_giorno_settimana."</br>";
-    //    echo "giornoposizione: ".$giornoposizione."</br>";
+    //  echo "giornoposizione: ".$giornoposizione."</br>";
     $url1="gtfs/calendar.txt";
     $inizio1=1;
     $homepage1 =0;
@@ -107,7 +109,9 @@ function get_calendar($linea)
    //echo $url1;
     $csv1 = array_map('str_getcsv', file($url1));
     $count1 = 0;
+
     foreach($csv1 as $data1=>$csv11){
+
     //    if ($csv1[0][$count1]=="service_id") $service_id=$count1;
       $count1 = $count1+1;
     }
@@ -161,7 +165,7 @@ function get_linee($linea)
     //  return   $homepage1;
     }
 
-    if ($count > 40){
+    if ($count > 80){
       $homepage1="errore generico linea";
     //  return   $homepage1;
     }
@@ -215,7 +219,7 @@ GLOBAL $trip_ids;
           if ($csv[$i][$stop_arrives] <=$ora2 && $csv[$i][$stop_arrives] >$ora) {
 
             $filter1= $csv[$i][$stop_ids];
-
+            //echo $filter1;
         if ($filter1==$linea){
         //   array_push($distanza[$i]['orario'],$csv[$i][1]);
           $distanza[$i]['orario']=$csv[$i][$stop_arrives];
@@ -223,7 +227,7 @@ GLOBAL $trip_ids;
             $distanza[$i]['linea']=get_corse($csv[$i][$trip_ids]);
             $c++;
 
-        //  echo "linea".$distanza[$i]['linea'];
+        // echo "linea".$distanza[$i]['linea'];
           }
         }
           }
