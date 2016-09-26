@@ -27,6 +27,8 @@ $stop_ids=$_GET["stop_ids"];
 $stop_arrives=$_GET["stop_arrives"];
 $trip_ids=$_GET["trip_ids"];
 $calendar_monday=$_GET["calendar_monday"];
+$start_date=$_GET["start_date"];
+$end_date=$_GET["end_date"];
 //debug
 //echo $trip_idt.",".$service_idt.",".$route_idt.",".$service_idc.",".$route_idr.",".$route_long_namer.",".$route_short_namer.",".$stop_ids.",".$stop_arrives.",".$trip_ids."</br>";
 //$homepage1c=false;
@@ -90,7 +92,10 @@ function get_calendar($linea)
     {
       GLOBAL $service_idc;
       GLOBAL $calendar_monday;
+      GLOBAL $start_date;
+      GLOBAL $end_date;
       $numero_giorno_settimana = date("w");
+      $today = date("Ymd");
       $linea=trim($linea);
       $giornoposizione=3; // inserire la posizione del Monday in calendar.txt
       if ($numero_giorno_settimana ==0) $giornoposizione=$calendar_monday+6;
@@ -123,7 +128,9 @@ function get_calendar($linea)
       if ($filter1==$linea){
 
       if ($csv1[$ii][$giornoposizione]==1) {
+        if ($today >=$csv1[$ii][$start_date] && $today >=$csv1[$ii][$end_date]){
       $homepage1=1;
+    }
   //    echo "filtro".$filter1."</br>";
   //      echo "giorno sett ".$csv1[$ii][7]."</br>";
   //    echo "homepage: ".$homepage1."</br>";

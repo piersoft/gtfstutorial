@@ -40,6 +40,8 @@ $url="gtfs/trips.txt";
   $homepage1 ="0";
   $service_idc="0";
   $calendar_monday="0";
+  $start_date="0";
+  $end_date="0";
  //echo $url1;
   $csv1 = array_map('str_getcsv', file($url1));
   $count1 = 0;
@@ -47,6 +49,8 @@ $url="gtfs/trips.txt";
     for ($i=0;$i<15;$i++){
       if ($csv1[0][$i]=="service_id") $service_idc=$i;
       if ($csv1[0][$i]=="monday") $calendar_monday=$i;
+      if ($csv1[0][$i]=="start_date") $start_date=$i;
+      if ($csv1[0][$i]=="end_date") $end_date=$i;
   }
   $url1="gtfs/routes.txt";
   $inizio1=0;
@@ -112,7 +116,7 @@ foreach($csv1 as $csv11=>$data1){
   $features[] = array(
           'type' => 'Feature',
           'geometry' => array('type' => 'Point', 'coordinates' => array((float)$data1[$lon],(float)$data1[$lat])),
-          'properties' => array('stop_desc' => $data1[$stop_desc],'stop_code' => $data1[$stop_code], 'stop_id' => $data1[$stop_id],'stop_name' => $data1[$stop_name],'stop_ids' =>$stop_ids,'stop_arrives' =>$stop_arrives,'trip_ids' =>$trip_ids,'route_short_namer' =>$route_short_namer,'route_long_namer' =>$route_long_namer,'route_idr' =>$route_idr,'service_idc' =>$service_idc,'trip_idt' =>$trip_idt,'service_idt' =>$service_idt,'route_idt' =>$route_idt,'calendar_monday' => $calendar_monday)
+          'properties' => array('stop_desc' => $data1[$stop_desc],'stop_code' => $data1[$stop_code], 'stop_id' => $data1[$stop_id],'stop_name' => $data1[$stop_name],'stop_ids' =>$stop_ids,'stop_arrives' =>$stop_arrives,'trip_ids' =>$trip_ids,'route_short_namer' =>$route_short_namer,'route_long_namer' =>$route_long_namer,'route_idr' =>$route_idr,'service_idc' =>$service_idc,'trip_idt' =>$trip_idt,'service_idt' =>$service_idt,'route_idt' =>$route_idt,'calendar_monday' => $calendar_monday,'start_date' => $start_date,'end_date' => $end_date)
           );
 }
 

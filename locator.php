@@ -223,6 +223,8 @@ p.pic {
                   var service_idt=e.popup._source.feature.properties.service_idt;
                   var route_idt=e.popup._source.feature.properties.route_idt;
                   var calendar_monday=e.popup._source.feature.properties.calendar_monday;
+                  var start_date=e.popup._source.feature.properties.start_date;
+                  var end_date=e.popup._source.feature.properties.end_date;
 
                   console.log(marker+" "+name+" calendar monday"+calendar_monday);
                   sidebar.show();
@@ -231,7 +233,7 @@ p.pic {
                 {contenedor.innerHTML = '';
                 } else{
 
-                  contenedor.innerHTML = '<iframe width="100%" height="600" src="tmp.php?id='+marker+'&name='+name+'&stop_ids='+stop_ids+'&stop_arrives='+stop_arrives+'&trip_ids='+trip_ids+'&route_short_namer='+route_short_namer+'&route_long_namer='+route_long_namer+'&route_idr='+route_idr+'&service_idc='+service_idc+'&trip_idt='+trip_idt+'&service_idt='+service_idt+'&route_idt='+route_idt+'&calendar_monday='+calendar_monday+'" frameborder="0" allowfullscreen></iframe>';
+                  contenedor.innerHTML = '<iframe width="100%" height="600" src="tmp.php?id='+marker+'&name='+name+'&stop_ids='+stop_ids+'&stop_arrives='+stop_arrives+'&trip_ids='+trip_ids+'&route_short_namer='+route_short_namer+'&route_long_namer='+route_long_namer+'&route_idr='+route_idr+'&service_idc='+service_idc+'&trip_idt='+trip_idt+'&service_idt='+service_idt+'&route_idt='+route_idt+'&calendar_monday='+calendar_monday+'&start_date='+start_date+'&end_date='+end_date+'" frameborder="0" allowfullscreen></iframe>';
 
                 var element = document.getElementById("infodiv");
                 if (element !=null) element.parentNode.removeChild(element);
