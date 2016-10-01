@@ -226,14 +226,14 @@ p.pic {
                   var start_date=e.popup._source.feature.properties.start_date;
                   var end_date=e.popup._source.feature.properties.end_date;
 
-                  console.log(marker+" "+name+" calendar monday"+calendar_monday);
+                  console.log(marker+" "+name+" calendar monday"+calendar_monday+"startdate"+start_date+" enddate "+ end_date);
                   sidebar.show();
                 var contenedor = document.getElementById('sidebar');
                 if(marker == '')
                 {contenedor.innerHTML = '';
                 } else{
 
-                  contenedor.innerHTML = '<iframe width="100%" height="600" src="tmp.php?id='+marker+'&name='+name+'&stop_ids='+stop_ids+'&stop_arrives='+stop_arrives+'&trip_ids='+trip_ids+'&route_short_namer='+route_short_namer+'&route_long_namer='+route_long_namer+'&route_idr='+route_idr+'&service_idc='+service_idc+'&trip_idt='+trip_idt+'&service_idt='+service_idt+'&route_idt='+route_idt+'&calendar_monday='+calendar_monday+'&start_date='+start_date+'&end_date='+end_date+'" frameborder="0" allowfullscreen></iframe>';
+                  contenedor.innerHTML = '<iframe width="100%" height="600" src="tmp.php?id='+marker+'&sname='+name+'&stop_ids='+stop_ids+'&stop_arrives='+stop_arrives+'&trip_ids='+trip_ids+'&route_short_namer='+route_short_namer+'&route_long_namer='+route_long_namer+'&route_idr='+route_idr+'&service_idc='+service_idc+'&trip_idt='+trip_idt+'&service_idt='+service_idt+'&route_idt='+route_idt+'&calendar_monday='+calendar_monday+'&start_date='+start_date+'&end_date='+end_date+'" frameborder="0" allowfullscreen></iframe>';
 
                 var element = document.getElementById("infodiv");
                 if (element !=null) element.parentNode.removeChild(element);
@@ -298,7 +298,7 @@ p.pic {
                 var direzione="ANDATA";
                 if (feature.properties.direction_id ==1) direzione="RITORNO";
                   popupString += '<b>Numero: </b>' + feature.properties.name + '<br />';
-                  popupString += '<b>Linea: </b>' + feature.properties.routes_route_long_name + '<br />';
+                  popupString += '<b>Linea: </b>' + feature.properties.route_long_name + '<br />';
                   popupString += '<b>Direzione: </b> ' + direzione + '<br />';
 
                                   //  for (var k in feature.properties) {
@@ -310,7 +310,7 @@ p.pic {
               layer.setStyle({
                weight: 5,
                opacity: 0.7,
-               color: '#'+feature.properties.routes_route_color,
+               color: '#'+feature.properties.route_color,
                dashArray: '3',
                fillOpacity: 0.3,
                fillColor: '#000000'
